@@ -5,7 +5,7 @@ export default function SmallDropdown({text, value, setValue, id}) {
     }
     return (
         <div className="inline m-4">
-            <label for={id}>
+            <label htmlFor={id}>
                 {text}
             </label>
             <select onChange={changeHandler} name={id} id={id} className="ml-3 bg-secondary p-1 rounded hover:bg-gray-500">
