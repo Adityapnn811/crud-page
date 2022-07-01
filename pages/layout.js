@@ -22,7 +22,7 @@ const sideBarItems = [
     },
 ]
 
-export default function Layout({ children }){
+function Layout({ children }){
     const router = useRouter();
     return(
         <div className="flex flex-1 flex-row bg-primary font-sans text-white h-screen">
@@ -55,3 +55,4 @@ export default function Layout({ children }){
     )
 }
 
+export {Layout}
