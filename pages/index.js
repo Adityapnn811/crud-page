@@ -7,25 +7,13 @@ import DataCard from '../components/dataCard'
 import { useState, useEffect } from 'react'
 import {UpdateToken} from './api/getToken'
 
-const data1 = [
-  {
-    "id": 2055,
-    "name": "Dr. Dejon Pacocha",
-    "address": "1400 Simonis Stream Apt. 276\nEast Lindsey, WA 10870",
-    "country": "Papua New Guinea",
-    "phone_number": "+1-351-524-4006",
-    "job_title": "Movie Director oR Theatre Director",
-    "status": false,
-    "created_at": "2022-05-31T08:42:58.000000Z",
-    "updated_at": "2022-05-31T08:42:58.000000Z"
-  }
-]
 
 export default function Home() {
   const [data, setData] = useState(null)
   const [token, setToken] = useState(null)
   const [filter, setFilter] = useState("Both")
   const [sort, setSort] = useState("Default")
+  const [searchInput, setSearchInput] = useState("")
   UpdateToken(setToken)
   const getData = async () => {
     await fetch("https://mitramas-test.herokuapp.com/customers", {
@@ -46,6 +34,15 @@ export default function Home() {
   // console.log(data)
   console.log(sort)
   console.log(filter)
+  if (sort === "Descending"){
+    data.sort(function (a, b) {
+      return a.name.localeCompare(b.name);
+    })
+  } else if (sort === "Ascending"){
+    data.sort(function (a, b) {
+      return b.name.localeCompare(a.name);
+    })
+  }
   return (
     <div className='h-fit w-full flex flex-1'>
       <Head>
@@ -58,14 +55,14 @@ export default function Home() {
       </Head>
       <main className='flex flex-1 flex-col justify-center items-center h-fit bg-primary'>
         <h1 className='text-4xl m-8'>Mitramas Infosys Global</h1>
-        <SearchBar/>
+        <SearchBar onChangeHandler={setSearchInput}/>
         <div className='flex flex-row'>
           <SmallDropdown text="Filter status" value={["Both", "True", "False"]} setValue={setFilter} id={"filter-dropdown"}/>
           <SmallDropdown text="Sort name" value={["Default", "Ascending", "Descending"]} setValue={setSort} id={"sort-dropdown"}/>
         </div>
         <div className='flex flex-col justify-center my-3'>
           {data && data.map((data, index) => {
-            if(filter !== "Both"){
+            if(filter !== "Both" && (data.name.includes(searchInput) || data.id.includes(searchInput) || data.job_title.includes(searchInput)) ){
               if(filter === "True"){
                 if(data.status === true){
                   return <DataCard data={data} key={index}/>
@@ -76,7 +73,7 @@ export default function Home() {
                 }
               }
             }
-            else {
+            else if (data.name.includes(searchInput) || data.id.toString().includes(searchInput) || data.job_title.includes(searchInput)) {
               return <DataCard data={data} key={index}/>
             }
             })}

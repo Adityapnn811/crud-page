@@ -11,6 +11,10 @@ function SearchBar({onChangeHandler}) {
         clickPoint.current.style.display = "block";
     };
 
+    const changeHandler = (e) => {
+        onChangeHandler(e.target.value);
+    }
+
     return (
         <div className="items-center px-4 flex h-fit w-1/2 justify-center" >
             <div className="relative w-full flex">
@@ -23,7 +27,7 @@ function SearchBar({onChangeHandler}) {
                     placeholder="Cari pengguna berdasarkan Nama, ID, Pekerjaan"
                     onFocus={handleFocus}
                     onBlur={handleBlur}
-                    onChange={onChangeHandler}
+                    onChange={changeHandler}
                 />
             </div>
         </div>
